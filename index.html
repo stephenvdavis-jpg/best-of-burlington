@@ -1,301 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Void | Btown Brief</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>The Void · Burlington VT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --border: #2a2a2a;
+    --ink: #f2f0eb;
+    --muted: #777;
+    --accent: #c8f04a;
+    --accent-dim: rgba(200,240,74,0.1);
+  }
 
-        :root {
-            --bg-color: #050505;
-            --card-bg: #111111;
-            --border-color: #222222;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --text-note: #6b7280;
-            --accent: #8b5cf6;
-            --accent-hover: #a78bfa;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
+  header {
+    padding: 1.2rem 1rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 50;
+  }
 
-        /* Header Styling */
-        header {
-            text-align: center;
-            padding: 5rem 1rem 3rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .header-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
-        h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-        }
+  .jump-nav {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .jump-nav::-webkit-scrollbar { display: none; }
 
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
+  .jump-pill {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .jump-pill:active, .jump-pill:hover { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
 
-        /* Main Grid */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-            align-items: start;
-        }
+  section { scroll-margin-top: 96px; }
 
-        /* Card Styling */
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 1.2rem 1rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        .card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.15);
-        }
+  .link-list { display: flex; flex-direction: column; }
 
-        .card h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1.25rem;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
+  .link-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+  }
+  .link-item:active { background: var(--accent-dim); }
 
-        /* Links List */
-        ul {
-            list-style: none;
-        }
+  .link-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
 
-        ul li {
-            margin-bottom: 0.85rem;
-            display: flex;
-            flex-direction: column;
-        }
+  .link-text { flex: 1; min-width: 0; }
+  .link-name { font-size: 14px; font-weight: 600; color: var(--ink); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .link-desc { font-size: 12px; color: var(--muted); display: block; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .link-chevron { color: var(--border); font-size: 16px; flex-shrink: 0; }
 
-        ul li a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s ease;
-            font-weight: 600;
-        }
+  .link-item.featured .link-icon { background: var(--accent-dim); border-color: rgba(200,240,74,0.3); }
+  .link-item.featured .link-name { color: var(--accent); }
 
-        ul li a:hover {
-            color: var(--accent-hover);
-        }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
 
-        .note {
-            font-size: 0.8rem;
-            color: var(--text-note);
-            font-weight: 400;
-            margin-top: 0.1rem;
-        }
+  .grid-item {
+    background: var(--bg);
+    padding: 0.75rem 0.9rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.12s;
+  }
+  .grid-item:active { background: var(--accent-dim); }
+  .grid-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .grid-handle { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Instagram Pill Grid */
-        .pill-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .pill {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            color: var(--text-muted);
-            padding: 0.4rem 0.8rem;
-            border-radius: 99px;
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .pill:hover {
-            background-color: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        .highlight-pill {
-            border-color: var(--accent);
-            color: var(--text-main);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container { padding: 0 1rem 3rem; }
-            h1 { font-size: 2.5rem; }
-        }
-    </style>
+  .footer {
+    padding: 2rem 1rem 1rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--border);
+    margin-top: 1.5rem;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>Welcome to the Void.</h1>
-        <p class="subtitle">The ultimate directory for the Burlington community. Every link you need, all in one place.</p>
-    </header>
+<header>
+  <a href="https://www.btownbrief.com" target="_blank" class="logo">Btown<span>.</span>Brief</a>
+  <span class="header-sub">The Void</span>
+</header>
 
-    <main class="container">
-        
-        <div class="card">
-            <h2>🚀 The Btown Ecosystem</h2>
-            <ul>
-                <li><a href="https://www.btownbrief.com/" target="_blank">Btown Brief Main Site</a></li>
-                <li><a href="https://www.btownbrief.com/archive" target="_blank">The Archive <span class="note">(Chronological issues)</span></a></li>
-                <li><a href="https://stephenvdavis-jpg.github.io/btown-news/btown-brief-archive.html" target="_blank">The Article Randomizer <span class="note">(GitHub Archive)</span></a></li>
-                <li><a href="https://www.meetup.com/burlington-social-activites-group/" target="_blank">Meetup Group</a></li>
-                <li><a href="https://t.me/+pULrkkS4vjBiZjEx" target="_blank">Telegram Groupchat</a></li>
-                <li><a href="https://stephenvdavis-jpg.github.io/btown-basketball-league/" target="_blank">Btown Basketball League</a></li>
-                <li><a href="https://www.btownbrief.com/city-council-meeting-summaries" target="_blank">City Council Meeting Summaries</a></li>
-                <li><a href="https://www.btownbrief.com/food-drink-deals" target="_blank">Food & Drink Deals</a></li>
-                <li><a href="https://www.btownbrief.com/202-activites" target="_blank">202 Activities <span class="note">(Pending Revamp)</span></a></li>
-                <li><a href="https://stephenvdavis-jpg.github.io/t-shirts/index.html" target="_blank">Merch Store</a></li>
-                <li><a href="https://ko-fi.com/btownbrief" target="_blank">Support & Donate (Ko-fi)</a></li>
-                <li><a href="https://www.btownbrief.com/about-me" target="_blank">About Me</a></li>
-            </ul>
-        </div>
+<nav class="jump-nav">
+  <a class="jump-pill" href="#btown">Btown Brief</a>
+  <a class="jump-pill" href="#feeds">Feeds</a>
+  <a class="jump-pill" href="#news">News</a>
+  <a class="jump-pill" href="#events">Events</a>
+  <a class="jump-pill" href="#venues">Venues</a>
+  <a class="jump-pill" href="#community">Community</a>
+  <a class="jump-pill" href="#weather">Weather</a>
+  <a class="jump-pill" href="#instagram">Instagram</a>
+</nav>
 
-        <div class="card">
-            <h2>💬 Social & Reddit</h2>
-            <ul>
-                <li><a href="https://www.instagram.com/btownbrief/" target="_blank">@btownbrief Instagram <span class="note">(🚨 Make sure to click the Repost Tab!)</span></a></li>
-                <li><a href="https://www.instagram.com/btownbrief/following/" target="_blank">Who Btown Brief is Following</a></li>
-                <li><a href="https://www.reddit.com/r/burlington/" target="_blank">r/burlington <span class="note">(Direct to Reddit)</span></a></li>
-                <li><a href="https://www.inoreader.com/stream/user/1003590800/tag/Reddit%20%28r%2Fburlington%29/view/html?cs=m" target="_blank">r/burlington RSS Feed <span class="note">(Ad-free scrolling)</span></a></li>
-                <li><a href="https://www.reddit.com/r/vermont/" target="_blank">r/vermont <span class="note">(Direct to Reddit)</span></a></li>
-                <li><a href="https://www.inoreader.com/stream/user/1003590800/tag/Reddit%20%28r%2FVermont%29/view/html?cs=m" target="_blank">r/vermont RSS Feed <span class="note">(Ad-free scrolling)</span></a></li>
-                <li><a href="https://frontporchforum.com/old-north-end/forum" target="_blank">Front Porch Forum <span class="note">(Old North End)</span></a></li>
-            </ul>
-        </div>
+<section id="btown">
+  <div class="section-title">Btown Brief</div>
+  <div class="link-list">
+    <a class="link-item featured" href="https://www.btownbrief.com" target="_blank">
+      <div class="link-icon">📰</div>
+      <div class="link-text"><span class="link-name">btownbrief.com</span><span class="link-desc">The newsletter. The home base.</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.btownbrief.com/archive" target="_blank">
+      <div class="link-icon">📁</div>
+      <div class="link-text"><span class="link-name">Past Issues Archive</span><span class="link-desc">All past issues in chronological order</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://stephenvdavis-jpg.github.io/btown-news/btown-brief-archive.html" target="_blank">
+      <div class="link-icon">🎲</div>
+      <div class="link-text"><span class="link-name">Article Randomizer</span><span class="link-desc">GitHub archive — random article picker</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.btownbrief.com/city-council-meeting-summaries" target="_blank">
+      <div class="link-icon">🏛️</div>
+      <div class="link-text"><span class="link-name">City Council Summaries</span><span class="link-desc">Meeting recaps so you don't have to watch</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.btownbrief.com/food-drink-deals" target="_blank">
+      <div class="link-icon">🍺</div>
+      <div class="link-text"><span class="link-name">Food & Drink Deals</span><span class="link-desc">Happy hours and specials, curated</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.btownbrief.com/202-activites" target="_blank">
+      <div class="link-icon">🗺️</div>
+      <div class="link-text"><span class="link-name">202 Activities</span><span class="link-desc">Burlington activity guide (new link coming soon)</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.btownbrief.com/local-vermont-podcasts" target="_blank">
+      <div class="link-icon">🎙️</div>
+      <div class="link-text"><span class="link-name">Local VT Podcasts List</span><span class="link-desc">Curated list of Vermont-made podcasts</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://stephenvdavis-jpg.github.io/btown-basketball-league/" target="_blank">
+      <div class="link-icon">🏀</div>
+      <div class="link-text"><span class="link-name">Btown Basketball League</span><span class="link-desc">The local rec league site</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.btownbrief.com/about-me" target="_blank">
+      <div class="link-icon">👤</div>
+      <div class="link-text"><span class="link-name">About the Brief</span><span class="link-desc">Who's behind all this</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://ko-fi.com/btownbrief" target="_blank">
+      <div class="link-icon">☕</div>
+      <div class="link-text"><span class="link-name">Buy a Coffee</span><span class="link-desc">Support the newsletter on Ko-fi</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://stephenvdavis-jpg.github.io/t-shirts/index.html" target="_blank">
+      <div class="link-icon">👕</div>
+      <div class="link-text"><span class="link-name">Merch Store</span><span class="link-desc">Rep Btown</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://t.me/+pULrkkS4vjBiZjEx" target="_blank">
+      <div class="link-icon">💬</div>
+      <div class="link-text"><span class="link-name">Telegram Group Chat</span><span class="link-desc">Join the community chat</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.meetup.com/burlington-social-activites-group/" target="_blank">
+      <div class="link-icon">🤝</div>
+      <div class="link-text"><span class="link-name">Btown Meetup Group</span><span class="link-desc">Official Btown Brief social crew on Meetup</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.instagram.com/btownbrief/" target="_blank">
+      <div class="link-icon">📸</div>
+      <div class="link-text"><span class="link-name">@btownbrief on Instagram</span><span class="link-desc">Tap Repost tab to see curated local content</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.instagram.com/btownbrief/following/" target="_blank">
+      <div class="link-icon">👥</div>
+      <div class="link-text"><span class="link-name">Who Btown Brief Follows</span><span class="link-desc">The full IG following list — good accounts</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-        <div class="card">
-            <h2>👥 Facebook Groups</h2>
-            <ul>
-                <li><a href="https://www.facebook.com/groups/467539915278507" target="_blank">Burlington 20 Somethings</a></li>
-                <li><a href="https://www.facebook.com/groups/569949090540357" target="_blank">The Dine In / To Go Tour</a></li>
-                <li><a href="https://www.facebook.com/groups/502280600349047" target="_blank">Burlington Area History</a></li>
-            </ul>
-        </div>
+<section id="feeds">
+  <div class="section-title">Feeds & Aggregators</div>
+  <div class="link-list">
+    <a class="link-item featured" href="https://www.inoreader.com/stream/user/1003590800/tag/VT%20News%20%28Focused%29/view/html" target="_blank">
+      <div class="link-icon">📡</div>
+      <div class="link-text"><span class="link-name">VT News Feed (Focused)</span><span class="link-desc">7 local sources — best signal-to-noise ratio</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item featured" href="https://www.inoreader.com/stream/user/1003590800/tag/Broader%20Local%20News%20%26%20Podcasts/view/html?cs=m" target="_blank">
+      <div class="link-icon">🌐</div>
+      <div class="link-text"><span class="link-name">Mega Feed</span><span class="link-desc">Expanded stations + VT podcasts combined</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.inoreader.com/stream/user/1003590800/tag/VT%20Podcasts/view/html" target="_blank">
+      <div class="link-icon">🎧</div>
+      <div class="link-text"><span class="link-name">VT Podcasts Feed</span><span class="link-desc">All Vermont-made audio in one scrollable feed</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.inoreader.com/stream/user/1003590800/tag/Reddit%20%28r%2Fburlington%29/view/html?cs=m" target="_blank">
+      <div class="link-icon">📰</div>
+      <div class="link-text"><span class="link-name">r/Burlington RSS Feed</span><span class="link-desc">Burlington subreddit via RSS — no Reddit ads</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.inoreader.com/stream/user/1003590800/tag/Reddit%20%28r%2FVermont%29/view/html?cs=m" target="_blank">
+      <div class="link-icon">📰</div>
+      <div class="link-text"><span class="link-name">r/Vermont RSS Feed</span><span class="link-desc">Vermont subreddit via RSS — no Reddit ads</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.reddit.com/r/burlington/" target="_blank">
+      <div class="link-icon">🔴</div>
+      <div class="link-text"><span class="link-name">r/Burlington (Reddit direct)</span><span class="link-desc">The subreddit itself — ads and all</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.reddit.com/r/vermont/" target="_blank">
+      <div class="link-icon">🔴</div>
+      <div class="link-text"><span class="link-name">r/Vermont (Reddit direct)</span><span class="link-desc">The Vermont subreddit itself</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-        <div class="card">
-            <h2>📰 The Master Feeds</h2>
-            <ul>
-                <li><a href="https://www.inoreader.com/stream/user/1003590800/tag/VT%20News%20%28Focused%29/view/html" target="_blank">The Focused News Feed <span class="note">(Top 7 local sources)</span></a></li>
-                <li><a href="https://www.inoreader.com/stream/user/1003590800/tag/VT%20Podcasts/view/html" target="_blank">VT Podcasts Feed <span class="note">(Audio stories & deep dives)</span></a></li>
-                <li><a href="https://www.inoreader.com/stream/user/1003590800/tag/Broader%20Local%20News%20%26%20Podcasts/view/html?cs=m" target="_blank">The Mega-Feed <span class="note">(News + Podcasts combined)</span></a></li>
-                <li><a href="https://www.btownbrief.com/local-vermont-podcasts" target="_blank">VT Podcasts List <span class="note">(Directory of local shows)</span></a></li>
-                <li><a href="https://news.google.com/topics/CAAqHAgKIhZDQklTQ2pvSWJHOWpZV3hmZGpJb0FBUAE/sections/CAQiTkNCSVNORG9JYkc5allXeGZkakpDRUd4dlkyRnNYM1l5WDNObFkzUnBiMjV5Q2hJSUwyMHZNR2h3ZVhaNkNnb0lMMjB2TUdod2VYWW9BQSowCAAqLAgKIiZDQklTRmpvSWJHOWpZV3hmZGpKNkNnb0lMMjB2TUdod2VYWW9BQVABUAE?hl=en-US&gl=US&ceid=US%3Aen" target="_blank">Google News <span class="note">(Burlington Aggregation)</span></a></li>
-            </ul>
-        </div>
+<section id="news">
+  <div class="section-title">Local News</div>
+  <div class="link-list">
+    <a class="link-item" href="https://www.sevendaysvt.com" target="_blank">
+      <div class="link-icon">📅</div>
+      <div class="link-text"><span class="link-name">Seven Days VT</span><span class="link-desc">Vermont's alt-weekly — arts, news, food, culture</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://vtdigger.org" target="_blank">
+      <div class="link-icon">🔍</div>
+      <div class="link-text"><span class="link-name">VT Digger</span><span class="link-desc">Nonprofit investigative journalism</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.vermontpublic.org" target="_blank">
+      <div class="link-icon">📻</div>
+      <div class="link-text"><span class="link-name">Vermont Public</span><span class="link-desc">Public radio & TV for Vermont</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.wcax.com/news/" target="_blank">
+      <div class="link-icon">📺</div>
+      <div class="link-text"><span class="link-name">WCAX News</span><span class="link-desc">Channel 3 Burlington TV news</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.mychamplainvalley.com" target="_blank">
+      <div class="link-icon">📺</div>
+      <div class="link-text"><span class="link-name">My Champlain Valley</span><span class="link-desc">Local news across the Champlain Valley</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://vtcommunitynews.org" target="_blank">
+      <div class="link-icon">🏘️</div>
+      <div class="link-text"><span class="link-name">VT Community News</span><span class="link-desc">Hyper-local community journalism</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://vtcynic.com" target="_blank">
+      <div class="link-icon">🎓</div>
+      <div class="link-text"><span class="link-name">Vermont Cynic</span><span class="link-desc">UVM's independent student newspaper</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.vtcng.com/otherpapersbvt/" target="_blank">
+      <div class="link-icon">🗞️</div>
+      <div class="link-text"><span class="link-name">The Other Paper</span><span class="link-desc">South Burlington-focused local coverage</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://vermontbiz.com" target="_blank">
+      <div class="link-icon">💼</div>
+      <div class="link-text"><span class="link-name">Vermont Biz</span><span class="link-desc">Economy, jobs, business news</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.willistonobserver.com" target="_blank">
+      <div class="link-icon">🗞️</div>
+      <div class="link-text"><span class="link-name">Williston Observer</span><span class="link-desc">Hyperlocal news just outside the city</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://news.google.com/topics/CAAqHAgKIhZDQklTQ2pvSWJHOWpZV3hmZGpJb0FBUAE/sections/CAQiTkNCSVNORG9JYkc5allXeGZkakpDRUd4dlkyRnNYM1l5WDNObFkzUnBiMjV5Q2hJSUwyMHZNR2h3ZVhaNkNnb0lMMjB2TUdod2VYWW9BQSowCAAqLAgKIiZDQklTRmpvSWJHOWpZV3hmZGpKNkNnb0lMMjB2TUdod2VYWW9BQVABUAE?hl=en-US&gl=US&ceid=US%3Aen" target="_blank">
+      <div class="link-icon">🌍</div>
+      <div class="link-text"><span class="link-name">Google News — Local VT</span><span class="link-desc">Vermont local news via Google News</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://frontporchforum.com/old-north-end/forum" target="_blank">
+      <div class="link-icon">🏠</div>
+      <div class="link-text"><span class="link-name">Front Porch Forum</span><span class="link-desc">Old North End neighborhood forum</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-        <div class="card">
-            <h2>🗞️ Direct News & Weather</h2>
-            <ul>
-                <li><a href="https://www.sevendaysvt.com/" target="_blank">Seven Days</a></li>
-                <li><a href="https://vtdigger.org/" target="_blank">VTDigger</a></li>
-                <li><a href="https://www.wcax.com/news/" target="_blank">WCAX News</a></li>
-                <li><a href="https://www.vermontpublic.org/" target="_blank">Vermont Public</a></li>
-                <li><a href="https://vtcommunitynews.org/" target="_blank">VT Community News</a></li>
-                <li><a href="https://vtcynic.com/" target="_blank">The VT Cynic</a></li>
-                <li><a href="https://www.mychamplainvalley.com" target="_blank">MyChamplainValley</a></li>
-                <li><a href="https://www.vtcng.com/otherpapersbvt/" target="_blank">Other Paper SBVT</a></li>
-                <li><a href="https://vermontbiz.com/" target="_blank">Vermont Biz</a></li>
-                <li><a href="https://www.willistonobserver.com" target="_blank">Williston Observer</a></li>
-                <li><a href="https://www.wcax.com/weather/" target="_blank">WCAX Weather</a></li>
-                <li><a href="https://www.mynbc5.com/weather" target="_blank">MyNBC5 Weather</a></li>
-            </ul>
-        </div>
+<section id="events">
+  <div class="section-title">Events</div>
+  <div class="link-list">
+    <a class="link-item" href="https://www.helloburlingtonvt.com/events/" target="_blank">
+      <div class="link-icon">👋</div>
+      <div class="link-text"><span class="link-name">Hello Burlington</span><span class="link-desc">Clean Burlington event aggregator</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://community.sevendaysvt.com/vermont/EventSearch?neighborhood=2124358%2C2124360&sortType=date&v=d" target="_blank">
+      <div class="link-icon">📅</div>
+      <div class="link-text"><span class="link-name">Seven Days Events</span><span class="link-desc">Burlington & Chittenden County</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.eventbrite.com/d/vt--burlington/all-events/" target="_blank">
+      <div class="link-icon">🎟️</div>
+      <div class="link-text"><span class="link-name">Eventbrite Burlington</span><span class="link-desc">Ticketed events in and around the city</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.meetup.com/find/?keywords=05401&source=EVENTS&distance=twentyFiveMiles&eventType=inPerson" target="_blank">
+      <div class="link-icon">📍</div>
+      <div class="link-text"><span class="link-name">Meetups (25mi of Burlington)</span><span class="link-desc">In-person meetups near the city</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.facebook.com/events/" target="_blank">
+      <div class="link-icon">📘</div>
+      <div class="link-text"><span class="link-name">Facebook Events</span><span class="link-desc">Still king for community events</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.mychamplainvalley.com/calendar/#/show?distance=10" target="_blank">
+      <div class="link-icon">📅</div>
+      <div class="link-text"><span class="link-name">MyChamplainValley Calendar</span><span class="link-desc">TV station events calendar</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://frontporchforum.com/old-north-end/calendar" target="_blank">
+      <div class="link-icon">🏡</div>
+      <div class="link-text"><span class="link-name">FPF Calendar (Old North End)</span><span class="link-desc">Neighborhood calendar via Front Porch Forum</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://fletcherfree.libcal.com/calendar?cid=21587" target="_blank">
+      <div class="link-icon">📚</div>
+      <div class="link-text"><span class="link-name">Fletcher Free Library</span><span class="link-desc">Free programs, talks, events</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-        <div class="card">
-            <h2>📅 Events & Calendars</h2>
-            <ul>
-                <li><a href="https://www.helloburlingtonvt.com/events/" target="_blank">HelloBurlington Events</a></li>
-                <li><a href="https://community.sevendaysvt.com/vermont/EventSearch?neighborhood=2124358%2C2124360&sortType=date&v=d" target="_blank">Seven Days Community Calendar</a></li>
-                <li><a href="https://www.eventbrite.com/d/vt--burlington/all-events/" target="_blank">Eventbrite (Burlington)</a></li>
-                <li><a href="https://www.meetup.com/find/?keywords=05401&source=EVENTS&distance=twentyFiveMiles&eventType=inPerson" target="_blank">Meetup.com (25 miles radius)</a></li>
-                <li><a href="https://www.facebook.com/events/" target="_blank">Facebook Events</a></li>
-                <li><a href="https://www.mychamplainvalley.com/calendar/#/show?distance=10" target="_blank">MyChamplainValley Calendar</a></li>
-                <li><a href="https://frontporchforum.com/old-north-end/calendar" target="_blank">Front Porch Forum Calendar (ONE)</a></li>
-            </ul>
-        </div>
+<section id="venues">
+  <div class="section-title">Venues & Sports</div>
+  <div class="link-list">
+    <a class="link-item" href="https://highergroundmusic.com/calendar/" target="_blank">
+      <div class="link-icon">🎵</div>
+      <div class="link-text"><span class="link-name">Higher Ground</span><span class="link-desc">Burlington's premier music venue</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.flynnvt.org/Events" target="_blank">
+      <div class="link-icon">🎭</div>
+      <div class="link-text"><span class="link-name">Flynn Center</span><span class="link-desc">Performing arts — Broadway, concerts, film</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www-vermontcomedyclub-com.seatengine.com/calendar" target="_blank">
+      <div class="link-icon">😂</div>
+      <div class="link-text"><span class="link-name">Vermont Comedy Club</span><span class="link-desc">National touring comics in a small room</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.gameonvt.com/index.php" target="_blank">
+      <div class="link-icon">🕹️</div>
+      <div class="link-text"><span class="link-name">Game On VT</span><span class="link-desc">Burlington's arcade bar and gaming venue</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.gameonvt.com/programs.php?gameon=1" target="_blank">
+      <div class="link-icon">🎮</div>
+      <div class="link-text"><span class="link-name">Game On — Programs</span><span class="link-desc">Leagues, tournaments, scheduled programs</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://uvmathletics.evenue.net/" target="_blank">
+      <div class="link-icon">🐱</div>
+      <div class="link-text"><span class="link-name">UVM Athletics — Tickets</span><span class="link-desc">Get in the stands for the Catamounts</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://uvmathletics.com/archives" target="_blank">
+      <div class="link-icon">📊</div>
+      <div class="link-text"><span class="link-name">UVM Athletics Archive</span><span class="link-desc">Stats, history, records</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-        <div class="card">
-            <h2>🎭 Venues & Athletics</h2>
-            <ul>
-                <li><a href="https://highergroundmusic.com/calendar/" target="_blank">Higher Ground</a></li>
-                <li><a href="https://www-vermontcomedyclub-com.seatengine.com/calendar" target="_blank">VT Comedy Club</a></li>
-                <li><a href="https://www.flynnvt.org/Events" target="_blank">The Flynn</a></li>
-                <li><a href="https://fletcherfree.libcal.com/calendar?cid=21587" target="_blank">Fletcher Free Library</a></li>
-                <li><a href="https://www.gameonvt.com/index.php" target="_blank">Game On VT (Main)</a></li>
-                <li><a href="https://www.gameonvt.com/programs.php?gameon=1" target="_blank">Game On VT (Programs)</a></li>
-                <li><a href="https://uvmathletics.evenue.net/" target="_blank">UVM Athletics Tickets</a></li>
-                <li><a href="https://uvmathletics.com/archives" target="_blank">UVM Athletics Archive</a></li>
-            </ul>
-        </div>
+<section id="community">
+  <div class="section-title">Community Groups</div>
+  <div class="link-list">
+    <a class="link-item" href="https://www.facebook.com/groups/502280600349047" target="_blank">
+      <div class="link-icon">🏙️</div>
+      <div class="link-text"><span class="link-name">Burlington Area History</span><span class="link-desc">Old photos, stories, nostalgia</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.facebook.com/groups/569949090540357" target="_blank">
+      <div class="link-icon">🍽️</div>
+      <div class="link-text"><span class="link-name">The Dine In / To Go Tour</span><span class="link-desc">Burlington foodie group — recs & reviews</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.facebook.com/groups/467539915278507" target="_blank">
+      <div class="link-icon">🎉</div>
+      <div class="link-text"><span class="link-name">Burlington 20 Somethings</span><span class="link-desc">Young adults doing Burlington things</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-        <div class="card" style="grid-column: 1 / -1;">
-            <h2>📸 The Local Insta Roster</h2>
-            <div class="pill-grid">
-                <a href="https://www.instagram.com/btownbrief/" target="_blank" class="pill highlight-pill">@btownbrief</a>
-                <a href="https://www.instagram.com/helloburlington/" target="_blank" class="pill">@helloburlington</a>
-                <a href="https://www.instagram.com/sevendaysvt/" target="_blank" class="pill">@sevendaysvt</a>
-                <a href="https://www.instagram.com/wcaxtv/" target="_blank" class="pill">@wcaxtv</a>
-                <a href="https://www.instagram.com/vtdigger/" target="_blank" class="pill">@vtdigger</a>
-                <a href="https://www.instagram.com/vermontpublic/" target="_blank" class="pill">@vermontpublic</a>
-                <a href="https://www.instagram.com/eatvermont/" target="_blank" class="pill">@eatvermont</a>
-                <a href="https://www.instagram.com/getdownvt/" target="_blank" class="pill">@getdownvt</a>
-                <a href="https://www.instagram.com/loveburlington/" target="_blank" class="pill">@loveburlington</a>
-                <a href="https://www.instagram.com/highergroundmusic/" target="_blank" class="pill">@highergroundmusic</a>
-                <a href="https://www.instagram.com/vtcomedy/" target="_blank" class="pill">@vtcomedy</a>
-                <a href="https://www.instagram.com/flynncenter/" target="_blank" class="pill">@flynncenter</a>
-                <a href="https://www.instagram.com/foampresents/" target="_blank" class="pill">@foampresents</a>
-                <a href="https://www.instagram.com/radiobean/" target="_blank" class="pill">@radiobean</a>
-                <a href="https://www.instagram.com/vermontgreenfc/" target="_blank" class="pill">@vermontgreenfc</a>
-                <a href="https://www.instagram.com/uvmathletics/" target="_blank" class="pill">@uvmathletics</a>
-                <a href="https://www.instagram.com/universityofvermont/" target="_blank" class="pill">@universityofvermont</a>
-                <a href="https://www.instagram.com/btvparks/" target="_blank" class="pill">@btvparks</a>
-                <a href="https://www.instagram.com/btvcityarts/" target="_blank" class="pill">@btvcityarts</a>
-                <a href="https://www.instagram.com/fletcherfree/" target="_blank" class="pill">@fletcherfree</a>
-                <a href="https://www.instagram.com/localmotionvermont/" target="_blank" class="pill">@localmotionvermont</a>
-                <a href="https://www.instagram.com/thesodaplant/" target="_blank" class="pill">@thesodaplant</a>
-                <a href="https://www.instagram.com/winooskivt/" target="_blank" class="pill">@winooskivt</a>
-                <a href="https://www.instagram.com/theboardroomvt/" target="_blank" class="pill">@theboardroomvt</a>
-                <a href="https://www.instagram.com/historicburlingtonvt/" target="_blank" class="pill">@historicburlingtonvt</a>
-                <a href="https://www.instagram.com/meteorologist_allison_black/" target="_blank" class="pill">@meteorologist_allison_black</a>
-                <a href="https://www.instagram.com/vermonttourism/" target="_blank" class="pill">@vermonttourism</a>
-                <a href="https://www.instagram.com/bfmvermont/" target="_blank" class="pill">@bfmvermont</a>
-                <a href="https://www.instagram.com/travelikealocalvt/" target="_blank" class="pill">@travelikealocalvt</a>
-                <a href="https://www.instagram.com/keepvermontwild/" target="_blank" class="pill">@keepvermontwild</a>
-                <a href="https://www.instagram.com/vermont_explored/" target="_blank" class="pill">@vermont_explored</a>
-            </div>
-        </div>
+<section id="weather">
+  <div class="section-title">Weather</div>
+  <div class="link-list">
+    <a class="link-item" href="https://www.wcax.com/weather/" target="_blank">
+      <div class="link-icon">⛅</div>
+      <div class="link-text"><span class="link-name">WCAX Weather</span><span class="link-desc">Channel 3 forecast — reliable VT coverage</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+    <a class="link-item" href="https://www.mynbc5.com/weather" target="_blank">
+      <div class="link-icon">🌦️</div>
+      <div class="link-text"><span class="link-name">NBC5 Weather</span><span class="link-desc">Good radar tools and local forecasters</span></div>
+      <span class="link-chevron">›</span>
+    </a>
+  </div>
+</section>
 
-    </main>
+<section id="instagram">
+  <div class="section-title">Instagram Accounts</div>
+  <div class="grid-2">
+    <a class="grid-item" href="https://www.instagram.com/btownbrief/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">btownbrief</span></a>
+    <a class="grid-item" href="https://www.instagram.com/uvmathletics/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">uvmathletics</span></a>
+    <a class="grid-item" href="https://www.instagram.com/btvparks/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">btvparks</span></a>
+    <a class="grid-item" href="https://www.instagram.com/fletcherfree/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">fletcherfree</span></a>
+    <a class="grid-item" href="https://www.instagram.com/helloburlington/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">helloburlington</span></a>
+    <a class="grid-item" href="https://www.instagram.com/sevendaysvt/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">sevendaysvt</span></a>
+    <a class="grid-item" href="https://www.instagram.com/wcaxtv/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">wcaxtv</span></a>
+    <a class="grid-item" href="https://www.instagram.com/eatvermont/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">eatvermont</span></a>
+    <a class="grid-item" href="https://www.instagram.com/getdownvt/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">getdownvt</span></a>
+    <a class="grid-item" href="https://www.instagram.com/localmotionvermont/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">localmotionvermont</span></a>
+    <a class="grid-item" href="https://www.instagram.com/btvcityarts/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">btvcityarts</span></a>
+    <a class="grid-item" href="https://www.instagram.com/vtdigger/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">vtdigger</span></a>
+    <a class="grid-item" href="https://www.instagram.com/radiobean/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">radiobean</span></a>
+    <a class="grid-item" href="https://www.instagram.com/vermontgreenfc/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">vermontgreenfc</span></a>
+    <a class="grid-item" href="https://www.instagram.com/universityofvermont/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">universityofvermont</span></a>
+    <a class="grid-item" href="https://www.instagram.com/thesodaplant/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">thesodaplant</span></a>
+    <a class="grid-item" href="https://www.instagram.com/foampresents/" target="_blank"><div class="grid-dot"></div><span class="link-handle">foampresents</span></a>
+    <a class="grid-item" href="https://www.instagram.com/vermonttourism/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">vermonttourism</span></a>
+    <a class="grid-item" href="https://www.instagram.com/bfmvermont/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">bfmvermont</span></a>
+    <a class="grid-item" href="https://www.instagram.com/travelikealocalvt/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">travelikealocalvt</span></a>
+    <a class="grid-item" href="https://www.instagram.com/winooskivt/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">winooskivt</span></a>
+    <a class="grid-item" href="https://www.instagram.com/keepvermontwild/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">keepvermontwild</span></a>
+    <a class="grid-item" href="https://www.instagram.com/vermontpublic/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">vermontpublic</span></a>
+    <a class="grid-item" href="https://www.instagram.com/loveburlington/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">loveburlington</span></a>
+    <a class="grid-item" href="https://www.instagram.com/theboardroomvt/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">theboardroomvt</span></a>
+    <a class="grid-item" href="https://www.instagram.com/historicburlingtonvt/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">historicburlingtonvt</span></a>
+    <a class="grid-item" href="https://www.instagram.com/vermont_explored/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">vermont_explored</span></a>
+    <a class="grid-item" href="https://www.instagram.com/meteorologist_allison_black/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">meteorologist_allison_black</span></a>
+    <a class="grid-item" href="https://www.instagram.com/highergroundmusic/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">highergroundmusic</span></a>
+    <a class="grid-item" href="https://www.instagram.com/vtcomedy/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">vtcomedy</span></a>
+    <a class="grid-item" href="https://www.instagram.com/flynncenter/" target="_blank"><div class="grid-dot"></div><span class="grid-handle">flynncenter</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><a href="https://www.btownbrief.com" target="_blank">btownbrief.com</a> · Burlington, Vermont</p>
+</footer>
+
 </body>
 </html>
