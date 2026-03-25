@@ -201,6 +201,47 @@
         }
         .pill:active { transform: translate(2px,2px); box-shadow: 0px 0px 0px rgba(17,17,17,1); }
 
+        /* --- NAVIGATION ARROWS (New) --- */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px; /* Tap target size */
+            height: 44px;
+            background: rgba(17, 17, 17, 0.4); /* Translucent dark background like images */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 150; /* Above slides and top gradient */
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s, opacity 0.2s;
+        }
+
+        .nav-arrow:active {
+            background: rgba(17, 17, 17, 0.6);
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .nav-arrow.left {
+            left: 10px;
+        }
+
+        .nav-arrow.right {
+            right: 10px;
+        }
+
+        .nav-arrow.disabled {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
         /* Tap Hint */
         .tap-hint {
             position: fixed;
@@ -223,6 +264,9 @@
     <div id="app-container">
         
         <div class="progress-container" id="progress-container"></div>
+
+        <div class="nav-arrow left">&lt;</div>
+        <div class="nav-arrow right">&gt;</div>
 
         <div class="slides-container" id="slides-container">
 
@@ -253,7 +297,7 @@
                     <a href="https://www.btownbrief.com/archive" target="_blank" class="card bg-yellow">
                         <h3>Archive</h3><p>Past issues</p>
                     </a>
-                    <a href="https://stephenvdavis-jpg.github.io/btown-news/btown-brief-archive.html" target="_blank" class="card span-2 bg-orange">
+                    <a href="https://stephenvdavis-jpg.github.io/bttown-news/btown-brief-archive.html" target="_blank" class="card span-2 bg-orange">
                         <div class="emoji">🎰</div>
                         <div>
                             <h3>Article Randomizer</h3>
@@ -488,7 +532,7 @@
 
         </div>
         
-        <div class="tap-hint">Tap empty space on edges to navigate</div>
+        <div class="tap-hint">Tap/Swipe edges or use arrows to navigate</div>
     </div>
 
     <script>
@@ -508,6 +552,23 @@
                 progressContainer.appendChild(wrapper);
             }
             const progressBars = document.querySelectorAll('.progress-bar-wrapper');
+            const prevArrow = document.querySelector('.nav-arrow.left');
+            const nextArrow = document.querySelector('.nav-arrow.right');
+
+            // Unified navigation functions
+            function showNextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateUI();
+                }
+            }
+
+            function showPreviousSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateUI();
+                }
+            }
 
             function updateUI() {
                 slides.forEach((slide, index) => {
@@ -530,16 +591,30 @@
                         bar.querySelector('.progress-bar-fill').style.width = '0%';
                     }
                 });
+
+                // Update Arrow States (fade if can't go that direction)
+                if (currentSlide === 0) {
+                    prevArrow.classList.add('disabled');
+                } else {
+                    prevArrow.classList.remove('disabled');
+                }
+
+                if (currentSlide === totalSlides - 1) {
+                    nextArrow.classList.add('disabled');
+                } else {
+                    nextArrow.classList.remove('disabled');
+                }
             }
 
             updateUI();
 
-            // Handle Navigation Taps
+            // --- NAVIGATION HANDLERS ---
             const appContainer = document.getElementById('app-container');
             
+            // 1. Handle Navigation Taps (existing/refined)
             appContainer.addEventListener('click', (e) => {
-                // IMPORTANT: If they click a link (a bento card or pill), do NOT change slides.
-                if (e.target.closest('a')) return;
+                // Ignore if clicking a link or a dedicated arrow
+                if (e.target.closest('a') || e.target.closest('.nav-arrow')) return;
 
                 const rect = appContainer.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -547,17 +622,43 @@
 
                 // Tap left 30% goes back, right 30% goes forward
                 if (x < width * 0.3) {
-                    if (currentSlide > 0) {
-                        currentSlide--;
-                        updateUI();
-                    }
+                    showPreviousSlide();
                 } else if (x > width * 0.7) {
-                    if (currentSlide < totalSlides - 1) {
-                        currentSlide++;
-                        updateUI();
+                    showNextSlide();
+                }
+            });
+
+            // 2. Handle New Arrow Clicks
+            prevArrow.addEventListener('click', showPreviousSlide);
+            nextArrow.addEventListener('click', showNextSlide);
+
+            // 3. Handle New Swiping Gestures
+            let startX = 0;
+            let startY = 0;
+            const swipeThreshold = 50; // px
+            const verticalTolerance = 50; // px - ignore swipe if vertical movement > tolerance relative to horizontal
+
+            appContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            });
+
+            appContainer.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                const dx = endX - startX;
+                const dy = endY - startY;
+
+                // Threshold logic: significant horizontal movement, but not a predominant vertical scroll.
+                if (Math.abs(dx) > swipeThreshold && Math.abs(dy) < Math.abs(dx)) {
+                    if (dx > 0) {
+                        showPreviousSlide(); // Swiped right (to left)
+                    } else {
+                        showNextSlide(); // Swiped left (to right)
                     }
                 }
             });
+
         });
     </script>
 </body>
